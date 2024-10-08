@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../app';
+import app from '../../app';
 
 test('GET "/": should be accessible', async () => {
     const response = await request(app).get('/');
