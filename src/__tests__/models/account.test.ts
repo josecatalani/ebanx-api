@@ -11,6 +11,12 @@ test("check if newly created 'Account' instance contains :id and :balance proper
     expect(newAccount).toHaveProperty('balance', 0);
 });
 
+test("check 'Account' properties types", () => {
+    const newAccount = new Account(10, 100);
+    expect(typeof newAccount.id).toBe('number');
+    expect(typeof newAccount.balance).toBe('number');
+});
+
 test("check if newly created 'Account' receives custom values", () => {
     const newAccount = new Account(10, 100);
     expect(newAccount).toHaveProperty('id', 10);
