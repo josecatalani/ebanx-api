@@ -1,4 +1,6 @@
-import bank from "../../models/bank"
+import Bank from "../../models/bank";
+
+const bank = Bank.getInstance();
 
 beforeEach(() => {
     bank.accounts = {};

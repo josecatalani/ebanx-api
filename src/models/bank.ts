@@ -1,7 +1,18 @@
 import Account from "./account";
 
 class Bank {
+    private static instance: Bank;
+
     accounts: Record<number, Account> = {};
+
+    private constructor() {}
+
+    static getInstance(): Bank {
+        if (!Bank.instance) {
+            Bank.instance = new Bank();
+        }
+        return Bank.instance;
+    }
 
     addAccount(accountId: number, accountBalance?: number): Account {
         if (this.accounts[accountId]) {
@@ -37,6 +48,4 @@ class Bank {
     }
 };
 
-const bank = new Bank();
-
-export default bank;
+export default Bank;

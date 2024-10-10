@@ -1,11 +1,11 @@
 import { InsufficientFundsError, InvalidDepositAmountError } from "../expections";
 
 export default class Account {
-    id?: number;
+    id?: string;
     balance: number = 0;
 
     constructor(id: number | undefined, balance?: number) {
-        this.id = id, 
+        this.id = String(id), 
         this.balance = balance ?? 0;
     }
 

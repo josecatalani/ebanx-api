@@ -2,9 +2,9 @@ import { InvalidDepositAmountError } from "../expections";
 import Account from "./account";
 
 export enum EventType {
-    Deposit,
-    Withdraw,
-    Transfer
+    Deposit = "deposit",
+    Withdraw = "withdraw",
+    Transfer = "transfer"
 };
 
 export default class Event {
