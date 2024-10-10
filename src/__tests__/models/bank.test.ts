@@ -22,7 +22,7 @@ test("'Bank:addAccount' should throw an error when adding an account with existi
 test("'Bank:addAccount' should create an account with zero balance if not provided", () => {
     const accountId = 200;
     const newAccount = bank.addAccount(accountId);
-    expect(newAccount.id).toBe(accountId);
+    expect(newAccount.id).toBe(String(accountId));
     expect(newAccount.balance).toBe(0);
 });
 
@@ -30,7 +30,7 @@ test("'Bank:addAccount' should return the created account item", () => {
     const accountId = 10;
     const accountBalance = 100;
     const newAccount = bank.addAccount(accountId, accountBalance);
-    expect(newAccount.id).toBe(accountId);
+    expect(newAccount.id).toBe(String(accountId));
     expect(newAccount.balance).toBe(accountBalance);
 });
 
@@ -56,7 +56,7 @@ test("'Bank:getAccount' should return the correct account by id", () => {
     bank.addAccount(2, 2);
     bank.addAccount(3, 3);
     const thirdAccount = bank.getAccount(3);
-    expect(thirdAccount.id).toBe(3)
+    expect(thirdAccount.id).toBe(String(3))
     expect(thirdAccount.balance).toBe(3)
 });
 
