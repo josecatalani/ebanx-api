@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "0c4cd5ae-1349-4b7f-89e6-58f4a4bb5e63",
+		"name": "EBANX API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "22883"
+	},
+	"item": [
+		{
+			"name": "Reset state before starting tests",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:3000/reset",
+				"description": "# Reset state before starting tests\n\nPOST /reset\n\n200 OK"
+			},
+			"response": []
+		},
+		{
+			"name": "Get balance for non-existing account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/balance?account_id=1234",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"balance"
+					],
+					"query": [
+						{
+							"key": "account_id",
+							"value": "1234"
+						}
+					]
+				},
+				"description": "# Get balance for non-existing account\n\nGET /balance?account_id=1234\n\n404 0"
+			},
+			"response": []
+		},
+		{
+			"name": "Create account with initial balance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"deposit\",\n    \"destination\": \"100\",\n    \"amount\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/event",
+				"description": "# Create account with initial balance\n\nPOST /event {\"type\":\"deposit\", \"destination\":\"100\", \"amount\":10}\n\n201 {\"destination\": {\"id\":\"100\", \"balance\":10}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit into existing account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"deposit\",\n    \"destination\": \"100\",\n    \"amount\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/event",
+				"description": "# Deposit into existing account\n\nPOST /event {\"type\":\"deposit\", \"destination\":\"100\", \"amount\":10}\n\n201 {\"destination\": {\"id\":\"100\", \"balance\":20}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Get balance for existing account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/balance?account_id=100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"balance"
+					],
+					"query": [
+						{
+							"key": "account_id",
+							"value": "100"
+						}
+					]
+				},
+				"description": "# Get balance for existing account\n\nGET /balance?account_id=100\n\n200 20"
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw from non-existing account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"withdraw\",\n    \"origin\": \"200\",\n    \"amount\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/event",
+				"description": "# Withdraw from non-existing account\n\nPOST /event {\"type\":\"withdraw\", \"origin\":\"200\", \"amount\":10}\n\n404 0"
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw from existing account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"withdraw\",\n    \"origin\": \"100\",\n    \"amount\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/event",
+				"description": "# Withdraw from existing account\n\nPOST /event {\"type\":\"withdraw\", \"origin\":\"100\", \"amount\":5}\n\n201 {\"origin\": {\"id\":\"100\", \"balance\":15}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer from existing account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"transfer\",\n    \"origin\": \"100\",\n    \"amount\": 15,\n    \"destination\": \"300\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/event",
+				"description": "# Transfer from existing account\n\nPOST /event {\"type\":\"transfer\", \"origin\":\"100\", \"amount\":15, \"destination\":\"300\"}\n\n201 {\"origin\": {\"id\":\"100\", \"balance\":0}, \"destination\": {\"id\":\"300\", \"balance\":15}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer from non-existing account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"transfer\",\n    \"origin\": \"200\",\n    \"amount\": 15,\n    \"destination\": \"300\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/event",
+				"description": "# Transfer from non-existing account\n\nPOST /event {\"type\":\"transfer\", \"origin\":\"200\", \"amount\":15, \"destination\":\"300\"}\n\n404 0"
+			},
+			"response": []
+		}
+	]
+}
