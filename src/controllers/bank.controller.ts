@@ -21,12 +21,16 @@ class BankController {
     }
 
     getResetRoute(req: Request, res: Response) {
-        const bank = Bank.getInstance();
-        bank.reset();
-        res.status(200).json('OK')
+        try {
+            const bank = Bank.getInstance();
+            bank.reset();
+            res.status(200).json('OK')
+        } catch (error) {
+            res.status(404).json(0)
+        }
     }
 
-    getEventPostRoute(req: Request, res: Response): Response {
+    getEventPostRoute(req: Request, res: Response) {
         const { type, origin, amount, destination } = req.body as unknown as { type: string, origin: string, amount: number, destination: string };
     
         const bank = Bank.getInstance();
@@ -38,30 +42,30 @@ class BankController {
         const destinationAccount = destinationAccountId ? bank.getAccount(destinationAccountId) : null;
     
         if (type === EventType.Withdraw && !originAccount) {
-            return res.status(404).json(0);
+            res.status(404).json(0);
         }
     
         try {
             if (type === EventType.Deposit && destinationAccountId) {
                 const updatedAccount = destinationAccount ? destinationAccount.deposit(amount) : bank.addAccount(destinationAccountId, amount);
-                return res.status(201).json({ "destination": updatedAccount });
+                res.status(201).json({ "destination": updatedAccount });
             }
     
             if (type === EventType.Withdraw && originAccount) {
                 const updatedAccount = originAccount.withdraw(amount);
-                return res.status(201).json({ "origin": updatedAccount });
+                res.status(201).json({ "origin": updatedAccount });
             }
     
             if (type === EventType.Transfer && originAccount) {
                 const updatedOrigin = originAccount.withdraw(amount);
                 const updatedDestination = destinationAccount ? destinationAccount.deposit(amount) : bank.addAccount(destinationAccountId!, amount);
-                return res.status(201).json({ "origin": updatedOrigin, "destination": updatedDestination });
+                res.status(201).json({ "origin": updatedOrigin, "destination": updatedDestination });
             }
 
-            return res.status(404).json(0);
+            res.status(404).json(0);
     
         } catch (error) {
-            return res.status(404).json(0);
+            res.status(404).json(0);
         }
     }
 }
