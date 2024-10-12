@@ -24,7 +24,7 @@ class BankController {
         try {
             const bank = Bank.getInstance();
             bank.reset();
-            res.status(200).json('OK')
+            res.status(200).send('OK')
         } catch (error) {
             res.status(404).json(0)
         }
@@ -43,29 +43,35 @@ class BankController {
     
         if (type === EventType.Withdraw && !originAccount) {
             res.status(404).json(0);
+            return;
         }
     
         try {
             if (type === EventType.Deposit && destinationAccountId) {
                 const updatedAccount = destinationAccount ? destinationAccount.deposit(amount) : bank.addAccount(destinationAccountId, amount);
                 res.status(201).json({ "destination": updatedAccount });
+                return;
             }
     
             if (type === EventType.Withdraw && originAccount) {
                 const updatedAccount = originAccount.withdraw(amount);
                 res.status(201).json({ "origin": updatedAccount });
+                return;
             }
     
             if (type === EventType.Transfer && originAccount) {
                 const updatedOrigin = originAccount.withdraw(amount);
                 const updatedDestination = destinationAccount ? destinationAccount.deposit(amount) : bank.addAccount(destinationAccountId!, amount);
                 res.status(201).json({ "origin": updatedOrigin, "destination": updatedDestination });
+                return;
             }
 
             res.status(404).json(0);
+            return;
     
         } catch (error) {
             res.status(404).json(0);
+            return;
         }
     }
 }

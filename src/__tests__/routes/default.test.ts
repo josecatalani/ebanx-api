@@ -14,5 +14,5 @@ test('GET "/": should return "Hello from the EBANX API" text', async () => {
 test('POST "/reset": should return statusCode:200 message:OK', async () => {
     const response = await request(app).post('/reset');
     expect(response.status).toBe(200);
-    expect(response.body).toBe('OK');
+    expect(response.text).toBe('OK');
 });

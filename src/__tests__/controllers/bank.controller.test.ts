@@ -4,7 +4,7 @@ import app from '../../app';
 test('reproducing entire Ipkiss Tester', async () => {
     const postResetResponse = await request(app).post('/reset');
     expect(postResetResponse.status).toBe(200);
-    expect(postResetResponse.body).toBe("OK");
+    expect(postResetResponse.text).toBe("OK");
 
     const getBalanceForNonExistingAccountResponse = await request(app).get('/balance?account_id=1234');
     expect(getBalanceForNonExistingAccountResponse.status).toBe(404);
